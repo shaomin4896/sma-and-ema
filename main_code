@@ -1,0 +1,39 @@
+//@version=4
+study("SMA+EMA",overlay=true)
+Switch = 1 //K線是否變色
+
+//==========Short Trend Change==========
+ConAqua  = close>ema(close,20) and close>sma(close,20) and close>close[20] 
+ConBlack = close<ema(close,20) and close<sma(close,20) and close<close[20] 
+ConGray  = not(ConAqua and ConBlack)
+ChangeColorGray = (ConGray and Switch==1) ? #FFFFFF:na
+ChangeColorAqua = (ConAqua and Switch==1) ? #34a69a:na
+ChangeColorBlack = (ConBlack and Switch==1) ? #FF5252:na
+barcolor(ChangeColorAqua,editable=false)
+barcolor(ChangeColorBlack,editable=false)
+barcolor(ChangeColorGray,editable=false)
+
+//========SMA & EMA============
+
+e1=ema(close,20)
+c1=sma(close,20)
+e2=ema(close,60)
+c2=sma(close,60)
+e3=ema(close,120)
+c3=sma(close,120)
+ 
+plot(e1,"ema20",color=color.gray)
+plot(c1,"ma20",color=#D3D3D3)
+plot(e2,"ema60",color=color.red)
+plot(c2,"ma60",color=#FDBCB4)
+plot(e3,"ema120",color=color.blue)
+plot(c3,"ma120",color=#ADD8E6)
+//DK3
+cond=barstate.islast
+moveBar = input(0)
+x20=input(20)+moveBar
+x60=input(60)+moveBar
+x120=input(120)+moveBar
+plot(cond?close[20]:na,color=#FFC40C,linewidth=5,offset=-x20,style=plot.style_circles,transp=0)
+plot(cond?close[60]:na,color=#FFC40C,linewidth=5,offset=-x60,style=plot.style_circles,transp=0)
+plot(cond?close[120]:na,color=#FFC40C,linewidth=5,offset=-x120,style=plot.style_circles,transp=0)
